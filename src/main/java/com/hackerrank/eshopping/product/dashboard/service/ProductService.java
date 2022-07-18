@@ -52,8 +52,7 @@ public class ProductService implements IProductService {
     public ProductDTO getProduct(Long id) {
         Optional<Product> product = repository.findById(id);
         if (product.isPresent()) {
-            ProductDTO productDTO = modelMapper.map(product.get(), ProductDTO.class);
-            return productDTO;
+            return modelMapper.map(product.get(), ProductDTO.class);
         }
         return null;
 
@@ -61,11 +60,11 @@ public class ProductService implements IProductService {
 
     @Override
     public List<ProductDTO> getByCategory(String cartegory) {
-        List<ProductDTO> products = repository.findProductsByCategory(cartegory).stream()
+        return repository.findProductsByCategory(cartegory).stream()
                 .sorted(CustomComparatorsUtil.stockComparator)
-                .map(p->modelMapper.map(p, ProductDTO.class))
-                .collect(Collectors.toList());
-        return products;
+                .map(p -> modelMapper.map(p, ProductDTO.class)).
+                collect(Collectors.toList());
+
     }
 
     @Override
@@ -73,18 +72,17 @@ public class ProductService implements IProductService {
         boolean checkAvailability = (availability == 1);
         List<Product> products = repository.findProductByCategoryAndAvailability(category, checkAvailability);
         products.sort(CustomComparatorsUtil.categoryAndAvailabilityComparator);
-        List<ProductDTO> productsDTO = products.stream().map(p->modelMapper.map(p, ProductDTO.class)).collect(Collectors.toList());
-        return productsDTO;
+        return products.stream()
+                .map(p -> modelMapper.map(p, ProductDTO.class))
+                .collect(Collectors.toList());
+
     }
 
     @Override
     public List<ProductDTO> getProducts() {
-        List<ProductDTO> productsOrdered = repository.findAll().stream()
+        return repository.findAll().stream()
                 .sorted(CustomComparatorsUtil.idComparator)
-                .map(p->modelMapper.map(p, ProductDTO.class))
-                .collect(Collectors.toList());
-
-        return productsOrdered;
+                .map(p -> modelMapper.map(p, ProductDTO.class)).collect(Collectors.toList());
     }
 }
 

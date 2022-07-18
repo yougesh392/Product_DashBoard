@@ -9,8 +9,12 @@ public interface IProductService {
     boolean addProduct(ProductDTO product);
 
     boolean updateProduct(Long productId, ProductDTO productDTO);
+
     ProductDTO getProduct(Long id);
+
     List<ProductDTO> getByCategory(String category);
+
     List<ProductDTO> getByCategoryAndAvailability(String category, int availability);
+
     List<ProductDTO> getProducts();
 }
